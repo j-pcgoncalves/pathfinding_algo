@@ -1,29 +1,23 @@
 import './App.css'
 
 export default function MazeGrid() {
+  let maze = [
+    ["wall", "wall", "wall", "wall"],
+    ["start", "path", "path", "wall"],
+    ["wall", "wall", "path", "wall"],
+    ["wall", "wall", "path", "end"],
+    ["wall", "wall", "wall", "wall"],
+  ];
+
   return (
     <div>
-      <div className='row'>
-        <div className='cell wall'></div>
-        <div className='cell path'></div>
-        <div className='cell start'></div>
-        <div className='cell end'></div>
-        <div className='cell wall'></div>
-      </div>
-      <div className='row'>
-        <div className='cell wall'></div>
-        <div className='cell wall'></div>
-        <div className='cell wall'></div>
-        <div className='cell path'></div>
-        <div className='cell wall'></div>
-      </div>
-      <div className='row'>
-        <div className='cell wall'></div>
-        <div className='cell wall'></div>
-        <div className='cell wall'></div>
-        <div className='cell path'></div>
-        <div className='cell wall'></div>
-      </div>
+      {maze.map((row, rowIndex) => (
+        <div key={rowIndex} className='row'>
+          {row.map((cell, cellIndex) => (
+            <div key={cellIndex} className={`cell ${cell}`}></div>
+          ))}
+        </div>
+      ))}
     </div>
   )
 }
