@@ -1,15 +1,19 @@
+import { useState } from 'react';
+
 import './App.css'
 
 export default function MazeGrid() {
 
-  // A 2d array that has grid info
-  let maze = [
+  // An initial 2d array that has grid info
+  let initialMaze = [
     ["wall", "wall", "wall", "wall"],
     ["start", "path", "path", "wall"],
     ["wall", "wall", "path", "wall"],
     ["wall", "wall", "path", "end"],
     ["wall", "wall", "wall", "wall"],
   ];
+
+  const [maze, setMaze] = useState(initialMaze);
 
   // Function that automatically generates a maze
   function generateMaze(height, width) {
@@ -28,11 +32,14 @@ export default function MazeGrid() {
           row.push("path");
         }
       }
-
       matrix.push(row);
     }
+    
+    // Edit the matrix to have start cell on the 2nd row, first cell and end cell on penultimate row, last cell 
+    matrix[1][0] = "start";
+    matrix[height - 2][width - 1] = "end";
 
-    console.log(matrix);
+    setMaze(matrix);
   }
 
   return (
