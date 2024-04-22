@@ -19,7 +19,7 @@ export default function MazeGrid() {
     let queue = [startNode];
 
     // Create a visited array to keep track of nodes already processed
-    let visited = new Set(`${start[0]},${start[1]}`);
+    let visited = new Set(`${startNode[0]},${startNode[1]}`);
 
     // Function that processes nodes
     function visitCell([x, y]) {
@@ -58,7 +58,7 @@ export default function MazeGrid() {
           visited.add(`${nx},${ny}`);
 
           if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
-            if (visitCell(start)) {
+            if (visitCell(startNode)) {
               return true;
             }
             queue.push([nx, ny]);
