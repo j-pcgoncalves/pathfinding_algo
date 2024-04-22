@@ -1,8 +1,9 @@
-# React + Vite
+# Pathfinding Algorithm
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple project built with React that implements the DFS and DFS algorithms to solve a maze, and shows the difference between the two algorithms visually.
 
-Currently, two official plugins are available:
+## How to use
+If you wish you can clobe this project to your computer and run "npm install" on your terminal to install dependencies, and then "npm run dev" to start the development server. You can also watch it live on github pages.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Credits
+This project was based on a project from (Zero to Mastery)[https://zerotomastery.io/] taught by Tuomas Kivioja.
