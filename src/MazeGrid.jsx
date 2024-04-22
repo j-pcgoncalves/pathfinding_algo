@@ -13,6 +13,63 @@ export default function MazeGrid() {
     ["wall", "wall", "wall", "wall"],
   ];
 
+  // Function that runs the BFS Algorithm
+  function bfs(startNode) {
+    // Create a queue array that keeps track of the nodes that need to be processed next
+    let queue = [startNode];
+
+    // Create a visited array to keep track of nodes already processed
+    let visited = new Set(`${start[0]},${start[1]}`);
+
+    // Function that processes nodes
+    function visitCell([x, y]) {
+      // Check if end cell was found and return true, or false otherwise
+      if (maze[y][x] === "end") {
+        console.log("Path Found!");
+        return true;
+      }
+
+      return false;
+    }
+
+    // Function that is called everytime the algorithm moves to another cell to process
+    function step() {
+      if (queue.length === 0) {
+        return;
+      }
+
+      const [x, y] = queue.shift();
+
+      // An array with possible directions that the maze generation algorithm can carve a path through the maze
+      const dirs = [
+        [0 /* X Axis */, 1 /* Y Axis */], 
+        [1, 0], 
+        [0, -1], 
+        [-1, 0]
+      ];
+
+      for (const [dx, dy] of dirs) {
+        // Coordinates of the cell next to current cell
+        let nx = x + dx;
+        let ny = y + dy;
+
+        // Check if next cell is valid and not yet visited
+        if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited.has(`${nx},${ny}`)) {
+          visited.add(`${nx},${ny}`);
+
+          if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
+            if (visitCell(start)) {
+              return true;
+            }
+            queue.push([nx, ny]);
+          }
+        }
+      }
+    }
+
+    step();
+  }
+
   const [maze, setMaze] = useState(initialMaze);
 
   // Function that automatically generates a maze
@@ -30,9 +87,8 @@ export default function MazeGrid() {
       matrix.push(row);
     }
 
-    // An array with possible directions that the maze generation algorithm can carve a path through the maze
     const dirs = [
-      [0 /* X Axis */, 1 /* Y Axis */], 
+      [0, 1], 
       [1, 0], 
       [0, -1], 
       [-1, 0]
