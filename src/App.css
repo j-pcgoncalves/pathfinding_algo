@@ -1,3 +1,29 @@
+.maze-grid {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.maze-button {
+  background-color: #0091ff;
+  margin: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.maze {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .row {
   display: flex;
   flex-direction: row;
