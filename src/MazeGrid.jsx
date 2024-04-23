@@ -29,6 +29,7 @@ export default function MazeGrid() {
 
     // Function that processes nodes
     function visitCell([x, y]) {
+      console.log(x, y);
       // Check if end cell was found and return true, or false otherwise
       if (maze[y][x] === "end") {
         console.log("Path Found!");
@@ -46,6 +47,8 @@ export default function MazeGrid() {
 
       const [x, y] = queue.shift();
 
+      console.log("New Step!");
+
       // An array with possible directions that the maze generation algorithm can carve a path through the maze
       const dirs = [
         [0 /* X Axis */, 1 /* Y Axis */], 
@@ -64,16 +67,19 @@ export default function MazeGrid() {
           visited.add(`${nx},${ny}`);
 
           if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
-            if (visitCell(startNode)) {
+            if (visitCell([nx, ny])) {
               return true;
             }
             queue.push([nx, ny]);
           }
         }
       }
+
+      step();
     }
 
     step();
+    return false;
   }
 
   // Function that runs the DFS Algorithm
@@ -86,6 +92,7 @@ export default function MazeGrid() {
 
     // Function that processes nodes
     function visitCell([x, y]) {
+      console.log(x, y);
       // Check if end cell was found and return true, or false otherwise
       if (maze[y][x] === "end") {
         console.log("Path Found!");
@@ -103,6 +110,8 @@ export default function MazeGrid() {
 
       const [x, y] = stack.pop();
 
+      console.log("New Step!");
+
       // An array with possible directions that the maze generation algorithm can carve a path through the maze
       const dirs = [
         [0 /* X Axis */, 1 /* Y Axis */], 
@@ -121,16 +130,18 @@ export default function MazeGrid() {
           visited.add(`${nx},${ny}`);
 
           if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
-            if (visitCell(startNode)) {
+            if (visitCell([nx, ny])) {
               return true;
             }
             stack.push([nx, ny]);
           }
         }
       }
+      step();
     }
 
     step();
+    return false;
   }
 
   // Function that automatically generates a maze
