@@ -12,6 +12,12 @@ export default function MazeGrid() {
     ["wall", "wall", "path", "end"],
     ["wall", "wall", "wall", "wall"],
   ];
+  
+  const [maze, setMaze] = useState(initialMaze);
+
+  // Get the width and height from the maze using state
+  const [width, setWidth] = useState(initialMaze[0].length);
+  const [height, setHeight] = useState(initialMaze.length);
 
   // Function that runs the BFS Algorithm
   function bfs(startNode) {
@@ -127,8 +133,6 @@ export default function MazeGrid() {
     step();
   }
 
-  const [maze, setMaze] = useState(initialMaze);
-
   // Function that automatically generates a maze
   function generateMaze(height, width) {
     let matrix = [];
@@ -181,12 +185,18 @@ export default function MazeGrid() {
     matrix[1][0] = "start";
     matrix[height - 2][width - 1] = "end";
 
+    setHeight(matrix.length);
+    setWidth(matrix[0].length);
     setMaze(matrix);
   }
 
   return (
     <div className='maze-grid'>
-      <button className='maze-button' onClick={() => generateMaze(10, 10)}>Refresh Maze</button>
+      <div className='controls'>
+        <button className='maze-button' onClick={() => generateMaze(10, 10)}>Refresh Maze</button>
+        <button className='maze-button' onClick={() => bfs([1, 0])}>Breadth-First Search</button>
+        <button className='maze-button' onClick={() => dfs([1, 0])}>Depth-First Search</button>
+      </div>
       <div className='maze'>
         {/* Displaying the maze grid with the map method to through each row and cell of the array */}
         {maze.map((row, rowIndex) => (
