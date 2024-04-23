@@ -70,6 +70,63 @@ export default function MazeGrid() {
     step();
   }
 
+  // Function that runs the DFS Algorithm
+  function dfs(startNode) {
+    // Create a stack array that keeps track of the nodes that need to be processed next
+    let stack = [startNode];
+
+    // Create a visited array to keep track of nodes already processed
+    let visited = new Set(`${startNode[0]},${startNode[1]}`);
+
+    // Function that processes nodes
+    function visitCell([x, y]) {
+      // Check if end cell was found and return true, or false otherwise
+      if (maze[y][x] === "end") {
+        console.log("Path Found!");
+        return true;
+      }
+
+      return false;
+    }
+
+    // Function that is called everytime the algorithm moves to another cell to process
+    function step() {
+      if (stack.length === 0) {
+        return;
+      }
+
+      const [x, y] = stack.pop();
+
+      // An array with possible directions that the maze generation algorithm can carve a path through the maze
+      const dirs = [
+        [0 /* X Axis */, 1 /* Y Axis */], 
+        [1, 0], 
+        [0, -1], 
+        [-1, 0]
+      ];
+
+      for (const [dx, dy] of dirs) {
+        // Coordinates of the cell next to current cell
+        let nx = x + dx;
+        let ny = y + dy;
+
+        // Check if next cell is valid and not yet visited
+        if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited.has(`${nx},${ny}`)) {
+          visited.add(`${nx},${ny}`);
+
+          if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
+            if (visitCell(startNode)) {
+              return true;
+            }
+            stack.push([nx, ny]);
+          }
+        }
+      }
+    }
+
+    step();
+  }
+
   const [maze, setMaze] = useState(initialMaze);
 
   // Function that automatically generates a maze
