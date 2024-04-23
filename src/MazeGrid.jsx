@@ -1,23 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './App.css'
 
-export default function MazeGrid() {
+export default function MazeGrid({ width = 10, height = 10 }) {
+  const [maze, setMaze] = useState([]);
+  const [timeoutIds, setTimeoutIds] = useState([]);
 
-  // An initial 2d array that has grid info
-  let initialMaze = [
-    ["wall", "wall", "wall", "wall"],
-    ["start", "path", "path", "wall"],
-    ["wall", "wall", "path", "wall"],
-    ["wall", "wall", "path", "end"],
-    ["wall", "wall", "wall", "wall"],
-  ];
-  
-  const [maze, setMaze] = useState(initialMaze);
-
-  // Get the width and height from the maze using state
-  const [width, setWidth] = useState(initialMaze[0].length);
-  const [height, setHeight] = useState(initialMaze.length);
+  // Generate a maze the first time the MazeGrid component renders
+  useEffect(() => {
+    generateMaze(width, height);
+  }, []);
 
   // Function that runs the BFS Algorithm
   function bfs(startNode) {
@@ -30,6 +22,20 @@ export default function MazeGrid() {
     // Function that processes nodes
     function visitCell([x, y]) {
       console.log(x, y);
+
+      setMaze((prevMaze) => 
+        // Iterate through the maze array to get all rows and cells
+        prevMaze.map((row, rowIndex) => 
+          row.map((cell, cellIndex) => {
+            // Check if the current iteration equals to the coordinates of the currently visited cell
+            if (rowIndex === y && cellIndex === x) {
+              return cell === "end" ? "end" : "visited";
+            }
+
+            return cell;
+          })
+        )
+      );
       // Check if end cell was found and return true, or false otherwise
       if (maze[y][x] === "end") {
         console.log("Path Found!");
@@ -75,7 +81,10 @@ export default function MazeGrid() {
         }
       }
 
-      step();
+      // Create an id for each timeout and store it in array using state
+      // This timeout is created to create a visually effect of the algorithm processing each cell
+      const timeoutId = setTimeout(step, 100);
+      setTimeoutIds((previousTimeoutIds) => [...previousTimeoutIds, timeoutId]);
     }
 
     step();
@@ -93,6 +102,20 @@ export default function MazeGrid() {
     // Function that processes nodes
     function visitCell([x, y]) {
       console.log(x, y);
+
+      setMaze((prevMaze) => 
+        // Iterate through the maze array to get all rows and cells
+        prevMaze.map((row, rowIndex) => 
+          row.map((cell, cellIndex) => {
+            // Check if the current iteration equals to the coordinates of the currently visited cell
+            if (rowIndex === y && cellIndex === x) {
+              return cell === "end" ? "end" : "visited";
+            }
+
+            return cell;
+          })
+        )
+      );
       // Check if end cell was found and return true, or false otherwise
       if (maze[y][x] === "end") {
         console.log("Path Found!");
@@ -137,7 +160,10 @@ export default function MazeGrid() {
           }
         }
       }
-      step();
+      // Create an id for each timeout and store it in array using state
+      // This timeout is created to create a visually effect of the algorithm processing each cell
+      const timeoutId = setTimeout(step, 100);
+      setTimeoutIds((previousTimeoutIds) => [...previousTimeoutIds, timeoutId]);
     }
 
     step();
@@ -183,6 +209,7 @@ export default function MazeGrid() {
         const nx = x + dx * 2;
         const ny = y + dy * 2;
 
+        // If the cell is valid the algorithm can carve a path to that cell
         if (isCellValid(nx, ny)) {
           matrix[y + dy][x + dx] = "path";
           carvePath(nx, ny);
@@ -196,15 +223,20 @@ export default function MazeGrid() {
     matrix[1][0] = "start";
     matrix[height - 2][width - 1] = "end";
 
-    setHeight(matrix.length);
-    setWidth(matrix[0].length);
     setMaze(matrix);
+  }
+
+  // Functions that resets timeouts and refreshes Maze
+  function refreshMaze() {
+    timeoutIds.forEach(clearTimeout);
+    setTimeoutIds([]);
+    generateMaze(10, 10);
   }
 
   return (
     <div className='maze-grid'>
       <div className='controls'>
-        <button className='maze-button' onClick={() => generateMaze(10, 10)}>Refresh Maze</button>
+        <button className='maze-button' onClick={() => refreshMaze()}>Refresh Maze</button>
         <button className='maze-button' onClick={() => bfs([1, 0])}>Breadth-First Search</button>
         <button className='maze-button' onClick={() => dfs([1, 0])}>Depth-First Search</button>
       </div>
